@@ -1,6 +1,3 @@
-아래는 요청하신 내용을 반영한 개정 README 예시입니다.
-
----
 
 # FOOD RECOMMEND SERVICE
 
@@ -23,31 +20,11 @@
 
 ## 기술 스택
 
-- **프론트엔드:** React, Vue 등
 - **백엔드:** Node.js, Python, Django 등
 - **데이터베이스:** MongoDB, MySQL, PostgreSQL 등
 - **추천 알고리즘:** 협업 필터링, 콘텐츠 기반 필터링, 머신러닝 등
 - **AI/데이터 분석:** OpenAI API, 요기요 오픈 API, 텍스트 분석 등[1]
-
-## 설치 및 실행 방법
-
-1. **저장소 복제**
-   ```bash
-   git clone [저장소 주소]
-   ```
-2. **프론트엔드 설치 및 실행**
-   ```bash
-   cd frontend
-   npm install
-   npm start
-   ```
-3. **백엔드 설치 및 실행**
-   ```bash
-   cd backend
-   npm install
-   npm start
-   ```
-   (또는 Python/Django 환경에 따라 pip install 및 python manage.py runserver)
+/Django 환경에 따라 pip install 및 python manage.py runserver)
 
 ## 사용 방법
 
@@ -62,13 +39,8 @@
 2. **풀 리퀘스트:** 기능 추가, 버그 수정 등은 풀 리퀘스트로 보내주세요.
 3. **문서화:** 코드, API, 사용법 등 문서화에 기여해 주세요.
 
-## 라이선스
-
-MIT 라이선스 또는 원하는 라이선스를 명시하세요.
-
 ---
 
 > 본 서비스는 OpenAI API와 요기요 오픈 API를 활용하여 AI 기반 추천과 리뷰 데이터 분석을 통합한 브라우저 기반 솔루션입니다[1].  
 > 푸드테크 분야에서 메뉴 추천 서비스는 차별화된 데이터 분석과 고객 경험 강화가 중요 포인트입니다.
 
-[1] programming.ai_development
