@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>내 주변 음식점 추천 (이미지 포함)</title>
+  <style>
+    ul { list-style: none; padding: 0; }
+    li { display: flex; align-items: center; border-bottom: 1px solid #eee; padding: 10px; }
+    li img { width: 100px; height: 100px; object-fit: cover; margin-right: 15px; border-radius: 5px; }
+    li div { flex: 1; }
+  </style>
+</head>
+<body>
+  <h2>내 주변 음식점 추천</h2>
+  <button onclick="recommend()">내 위치로 음식점 추천</button>
+  <ul id="result"></ul>
+  <script>
+    // 1단계에서 발급받은 Bing Search API 키를 여기에 입력하세요.
+    const BING_API_KEY = "여기에_Bing_Search_API_키를_입력하세요";
+
+    async function getBingImage(query) {
+      if (!BING_API_KEY || BING_API_KEY === "여기에_Bing_Search_API_키를_입력하세요") {
+        return null; // Bing API 키가 없으면 이미지를 가져오지 않음
+      }
+      const endpoint = `https://api.bing.microsoft.com/v7.0/images/search?q=${encodeURIComponent(query)}&count=1`;
+      try {
+        const res = await fetch(endpoint, {
+          headers: { 'Ocp-Apim-Subscription-Key': BING_API_KEY }
+        });
+        const data = await res.json();
+        return data.value && data.value.length > 0 ? data.value[0].thumbnailUrl : null;
+      } catch (e) {
+        console.error("Bing 이미지 검색 오류:", e);
+        return null;
+      }
+    }
+
+    async function recommend() {
+      if (!navigator.geolocation) {
+        alert('이 브라우저는 위치 정보를 지원하지 않습니다.');
+        return;
+      }
+      const resultList = document.getElementById('result');
+      resultList.innerHTML = '<li>위치 정보를 가져오는 중...</li>';
+      
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        const kakaoApiKey = 'a75cdf5ed76a8f93be7cb7e8a63f114f';
+        const url = `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&x=${lng}&y=${lat}&radius=1000&sort=distance`;
+        
+        const res = await fetch(url, { headers: { 'Authorization': `KakaoAK ${kakaoApiKey}` } });
+        const data = await res.json();
+        
+        if (data.documents.length) {
+          resultList.innerHTML = '<li>이미지를 포함한 음식점 정보를 불러오는 중...</li>';
+          const placesHtml = await Promise.all(data.documents.map(async place => {
+            const searchQuery = `${place.place_name} ${place.road_address_name || place.address_name}`;
+            const imageUrl = await getBingImage(searchQuery);
+            return `
+              <li>
+                <img src="${imageUrl || 'https://via.placeholder.com/100?text=No+Image'}" alt="${place.place_name}">
+                <div>
+                  <strong>${place.place_name}</strong><br>
+                  주소: ${place.road_address_name || place.address_name}<br>
+                  카테고리: ${place.category_name}<br>
+                  전화번호: ${place.phone || '정보 없음'}<br>
+                  <a href="${place.place_url}" target="_blank">카카오맵 상세정보</a>
+                </div>
+              </li>`;
+          }));
+          resultList.innerHTML = placesHtml.join('');
+        } else {
+          resultList.innerHTML = '<li>주변에 음식점이 없습니다.</li>';
+        }
+      }, (err) => {
+        resultList.innerHTML = '<li>위치 정보를 가져올 수 없습니다.</li>';
+      });
+    }
+  </script>
+</body>
+</html>
