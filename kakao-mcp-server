@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "mcp-server-kakao-map": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@cgoinglove/mcp-server-kakao-map",
+        "--key",
+        "06cb56f0-2c14-4d6d-9106-16ad11bc5f57",
+        "--profile",
+        "profound-goose-Dvc5x6"
+      ]
+    }
+  }
+}
