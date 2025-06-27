@@ -15,25 +15,7 @@
   <button onclick="recommend()">내 위치로 음식점 추천</button>
   <ul id="result"></ul>
   <script>
-    // 1단계에서 발급받은 Bing Search API 키를 여기에 입력하세요.
-    const BING_API_KEY = "여기에_Bing_Search_API_키를_입력하세요";
-
-    async function getBingImage(query) {
-      if (!BING_API_KEY || BING_API_KEY === "여기에_Bing_Search_API_키를_입력하세요") {
-        return null; // Bing API 키가 없으면 이미지를 가져오지 않음
-      }
-      const endpoint = `https://api.bing.microsoft.com/v7.0/images/search?q=${encodeURIComponent(query)}&count=1`;
-      try {
-        const res = await fetch(endpoint, {
-          headers: { 'Ocp-Apim-Subscription-Key': BING_API_KEY }
-        });
-        const data = await res.json();
-        return data.value && data.value.length > 0 ? data.value[0].thumbnailUrl : null;
-      } catch (e) {
-        console.error("Bing 이미지 검색 오류:", e);
-        return null;
-      }
-    }
+ 
 
     async function recommend() {
       if (!navigator.geolocation) {
